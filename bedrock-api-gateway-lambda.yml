@@ -13,11 +13,11 @@
 # DEPLOYMENT AND STACK MANAGEMENT
 # Usage from command line:
 # CREATE
-#   aws cloudformation create-stack --stack-name bedrock-workshop --capabilities CAPABILITY_NAMED_IAM --template-body file://cf.yml --region <<YOUR-REGION>>
+#   aws cloudformation create-stack --stack-name bedrock-api-gateway-lambda --capabilities CAPABILITY_NAMED_IAM --template-body file://cf.yml --region <<YOUR-REGION>>
 # UPDATE
-#   aws cloudformation update-stack --stack-name bedrock-workshop --capabilities CAPABILITY_NAMED_IAM --template-body file://cf.yml --region <<YOUR-REGION>>
+#   aws cloudformation update-stack --stack-name bedrock-api-gateway-lambda --capabilities CAPABILITY_NAMED_IAM --template-body file://cf.yml --region <<YOUR-REGION>>
 # DELETE
-#   aws cloudformation delete-stack --stack-name bedrock-workshop --region <<YOUR-REGION>>
+#   aws cloudformation delete-stack --stack-name bedrock-api-gateway-lambda --region <<YOUR-REGION>>
 
 # Bonus Resources:
 # CFN-NAG
@@ -70,7 +70,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: AmazonBedrockAPISecurityGroup
-      GroupDescription: Self-referencing security group for Bedrock workshop
+      GroupDescription: Self-referencing security group for AmazonBedrockAPI
       VpcId: !Ref AmazonBedrockAPIVPC
   SecurityGroupIngress:
     Type: AWS::EC2::SecurityGroupIngress
@@ -169,9 +169,9 @@ Resources:
       Type: data
       Description: Access policy
       Policy: !Sub >-
-        [{"Description":"Access for worshop roles","Rules":[{"ResourceType":"index","Resource":["index/*/*"],"Permission":["aoss:*"]},
+        [{"Description":"Access for BedrockAPI roles","Rules":[{"ResourceType":"index","Resource":["index/*/*"],"Permission":["aoss:*"]},
         {"ResourceType":"collection","Resource":["collection/*"],"Permission":["aoss:*"]}],
-        "Principal":["arn:aws:iam::${AWS::AccountId}:role/AmazonBedrockAPIStackSageMakerRole", "arn:aws:iam::${AWS::AccountId}:role/AmazonBedrockAPIStackLambdaFunctionRole"]}]
+        "Principal":["arn:aws:iam::${AWS::AccountId}:role/AmazonBedrockAPIStackLambdaFunctionRole"]}]
   AmazonBedrockAPINetworkPolicy:
     Type: 'AWS::OpenSearchServerless::SecurityPolicy'
     Properties:
